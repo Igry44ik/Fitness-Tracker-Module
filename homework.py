@@ -62,16 +62,11 @@ class Training:
 
 class Running(Training):
     """Тренировка: бег."""
-
-    def __init__(self, action, duration, weight) -> None:
-        super().__init__(action, duration, weight)
-
     def get_spent_calories(self) -> float:
-        M_IN_KM = 1000
         ratio_1 = 18
         ratio_2 = 20
         spent_calories = ((ratio_1 * self.get_mean_speed() - ratio_2)
-                          * self.weight / M_IN_KM * self.duration * 60)
+                          * self.weight / self.M_IN_KM * self.duration * 60)
         return spent_calories
 
 
@@ -106,7 +101,7 @@ class Swimming(Training):
         self.count_pool = count_pool
 
     def get_mean_speed(self) -> float:
-        mean_speed = ((self.length_pool * self.count_pool / Training.M_IN_KM)
+        mean_speed = ((self.length_pool * self.count_pool / self.M_IN_KM)
                       / self.duration)
         return mean_speed
 
@@ -118,21 +113,24 @@ class Swimming(Training):
         return spent_calories
 
 
+SWM = 'SWM'
+RUN = 'RUN'
+WLK = 'WLK'
+
+
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
     package = {
-        'SWM': Swimming,
-        'RUN': Running,
-        'WLK': SportsWalking
+        SWM: Swimming,
+        RUN: Running,
+        WLK: SportsWalking
     }
-    for i in package:
-        if i == workout_type:
-            if workout_type == 'SWM':
-                return Swimming(*data)
-            elif workout_type == 'RUN':
-                return Running(*data)
-            elif workout_type == "WLK":
-                return SportsWalking(*data)
+    if workout_type == SWM:
+        return package[SWM](*data)
+    elif workout_type == RUN:
+        return package[RUN](*data)
+    elif workout_type == WLK:
+        return package[WLK](*data)
 
 
 def main(training: Training) -> None:
