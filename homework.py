@@ -27,6 +27,7 @@ class Training:
     """Базовый класс тренировки."""
     LEN_STEP = 0.65
     M_IN_KM = 1000
+    training_name = ''
 
     def __init__(self,
                  action: int,
@@ -54,7 +55,7 @@ class Training:
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
-        training_info = InfoMessage(self.__class__.__name__, self.duration,
+        training_info = InfoMessage(self.training_name, self.duration,
                                     self.get_distance(), self.get_mean_speed(),
                                     self.get_spent_calories())
         return training_info
@@ -62,6 +63,8 @@ class Training:
 
 class Running(Training):
     """Тренировка: бег."""
+    training_name = 'Running'
+
     def get_spent_calories(self) -> float:
         ratio_1 = 18
         ratio_2 = 20
@@ -72,6 +75,7 @@ class Running(Training):
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
+    training_name = 'SportsWalking'
 
     def __init__(self, action, duration, weight, height) -> None:
         super().__init__(action, duration, weight)
@@ -90,6 +94,7 @@ class SportsWalking(Training):
 class Swimming(Training):
     """Тренировка: плавание."""
     LEN_STEP = 1.38
+    training_name = 'Swimming'
 
     def __init__(self, action: int,
                  duration: float,
