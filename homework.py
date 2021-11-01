@@ -1,4 +1,3 @@
-from __future__ import annotations
 SWM = 'SWM'
 RUN = 'RUN'
 WLK = 'WLK'
@@ -123,12 +122,15 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    package = {
-        SWM: Swimming,
-        RUN: Running,
-        WLK: SportsWalking
-    }
-    return package.get(workout_type)(*data)
+    try:
+        package = {
+            SWM: Swimming,
+            RUN: Running,
+            WLK: SportsWalking
+        }
+        return package.get(workout_type)(*data)
+    except KeyError:
+        raise KeyError('Нет такого кода тренировки')
 
 
 def main(training: Training) -> None:
